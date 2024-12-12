@@ -62,7 +62,7 @@ function M.find_env_files()
     -- is somewhere else but in the current working directory.
     local files = vim.fs.find(function(name, _)
         return name:match(config.env.pattern)
-    end, { limit = math.huge, type = "file", path = "./" })
+    end, { limit = math.huge, path = vim.fn.expand("%:h"), upward = true })
 
     return files
 end
@@ -81,9 +81,10 @@ function M.find_relevent_env_file()
     env_file = vim.fs.find(filename .. ".env", {
         path = vim.fn.expand("%:h"),
         upward = true,
-        stop = vim.fn.getcwd(),
+        -- stop = vim.fn.getcwd(),
+        stop = "/",
         type = "file",
-        limit = math.huge,
+        -- limit = math.huge,
     })[1]
     if env_file then
         logger.debug("found .env file:", env_file)
@@ -96,9 +97,10 @@ function M.find_relevent_env_file()
     end, {
         path = vim.fn.expand("%:h"),
         upward = true,
-        stop = vim.fn.getcwd(),
+        -- stop = vim.fn.getcwd(),
+        stop = "/",
         type = "file",
-        limit = math.huge,
+        -- limit = math.huge,
     })[1]
     if env_file then
         logger.debug("found .env file:", env_file)
